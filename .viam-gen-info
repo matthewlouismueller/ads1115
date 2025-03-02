@@ -1,0 +1,12 @@
+{
+  "module_name": "ads1115",
+  "namespace": "kodama",
+  "language": "python",
+  "resource_type": "component",
+  "resource_subtype": "sensor",
+  "model_name": "adc",
+  "enable_cloud_build": true,
+  "initialize_git": false,
+  "generator_version": "0.1.0",
+  "generated_on": "2025-02-27T15:24:11.649261289Z"
+}
