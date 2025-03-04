@@ -1,10 +1,10 @@
 # Module ads1115 
 
-Provide a description of the purpose of the module and any relevant information.
+This module is for reading an ADS1115 analog to digital converter into Viam as a sensor over 12C.
 
 ## Model kodama:ads1115:adc
 
-Provide a description of the model and any relevant information.
+Currently, the model reads and returns all four analog input channels with a 0.1 second delay between each reading whenever ```get_readings()``` is called. Future work to support other modes of use for the ADS1115.
 
 ### Configuration
 The following attribute template can be used to configure this model:
