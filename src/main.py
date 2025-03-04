@@ -47,12 +47,12 @@ class adc(Sensor, EasyResource):
         fields = config.attributes.fields
 
         if "i2c_address" in fields:
-            if not fields["i2c_address"].HasField("string"):
+            if not fields["i2c_address"].HasField("string_value"):
                 raise Exception("i2c_address must be a valid string.")
             
         if "i2c_bus" in fields:
-            if not fields["i2c_bus"].HasField("string"):
-                raise Exception("i2c_bus must be a valid string.")
+            if not fields["i2c_bus"].HasField("number_value"):
+                raise Exception("i2c_bus must be a valid integer.")
 
         return []
 
@@ -66,8 +66,19 @@ class adc(Sensor, EasyResource):
             dependencies (Mapping[ResourceName, ResourceBase]): Any dependencies (both implicit and explicit)
         """
         attrs = struct_to_dict(config.attributes)
-        self.i2c_address = attrs.get("i2c_address", "0x84")
-        self.i2c_bus = attrs.get("i2c_bus", "1")
+        self.i2c_address = attrs.get("i2c_address", 0x48)
+        if isinstance(self.i2c_address,str):
+            address_json = {
+                "0x48": 0x48,
+                "0x49": 0x49,
+                "0x4A": 0x4A,
+                "0x4B": 0x4B
+            }
+            try:
+                self.i2c_address = address_json[self.i2c_address]
+            except:
+                self.i2c_address = 0x48
+        self.i2c_bus = attrs.get("i2c_bus", 1)
         return super().reconfigure(config, dependencies)
 
     async def get_readings(
@@ -78,7 +89,7 @@ class adc(Sensor, EasyResource):
         **kwargs
     ) -> Mapping[str, SensorReading]:
         
-        adc = Adafruit_ADS1x15.ADS1015(address=0x48, busnum=1)
+        adc = Adafruit_ADS1x15.ADS1015(address=self.i2c_address, busnum=int(self.i2c_bus))
 
         chan0 = adc.read_adc(0, gain=1)
         time.sleep(0.1)

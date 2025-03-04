@@ -11,8 +11,8 @@ The following attribute template can be used to configure this model:
 
 ```json
 {
-"attribute_1": <float>,
-"attribute_2": <string>
+  "i2c_address":"0x48",
+  "i2c_bus":1
 }
 ```
 
@@ -22,29 +22,14 @@ The following attributes are available for this model:
 
 | Name          | Type   | Inclusion | Description                |
 |---------------|--------|-----------|----------------------------|
-| `attribute_1` | float  | Required  | Description of attribute 1 |
-| `attribute_2` | string | Optional  | Description of attribute 2 |
+| `i2c_address` | string  | Optional  | i2c address of ADS1115 sensor (default is 0x48) |
+| `i2c_bus` | int | Optional  | i2c bus number (default is 1) |
 
 #### Example Configuration
 
 ```json
 {
-  "attribute_1": 1.0,
-  "attribute_2": "foo"
-}
-```
-
-### DoCommand
-
-If your model implements DoCommand, provide an example payload of each command that is supported and the arguments that can be used. If your model does not implement DoCommand, remove this section.
-
-#### Example DoCommand
-
-```json
-{
-  "command_name": {
-    "arg1": "foo",
-    "arg2": 1
-  }
+  "i2c_address":"0x48",
+  "i2c_bus":1
 }
 ```
