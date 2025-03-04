@@ -53,6 +53,19 @@ class adc(Sensor, EasyResource):
         if "i2c_bus" in fields:
             if not fields["i2c_bus"].HasField("number_value"):
                 raise Exception("i2c_bus must be a valid integer.")
+        
+        if "ch0_gain" in fields:
+            if not fields["ch0_gain"].HasField("number_value"):
+                raise Exception("ch0_gain must be a valid integer.")
+        if "ch1_gain" in fields:
+            if not fields["ch1_gain"].HasField("number_value"):
+                raise Exception("ch1_gain must be a valid integer.")
+        if "ch2_gain" in fields:
+            if not fields["ch2_gain"].HasField("number_value"):
+                raise Exception("ch2_gain must be a valid integer.")
+        if "ch3_gain" in fields:
+            if not fields["ch3_gain"].HasField("number_value"):
+                raise Exception("ch3_gain must be a valid integer.")
 
         return []
 
@@ -79,6 +92,10 @@ class adc(Sensor, EasyResource):
             except:
                 self.i2c_address = 0x48
         self.i2c_bus = attrs.get("i2c_bus", 1)
+        self.ch0_gain = attrs.get("ch0_gain", 1)
+        self.ch1_gain = attrs.get("ch1_gain", 1)
+        self.ch2_gain = attrs.get("ch2_gain", 1)
+        self.ch3_gain = attrs.get("ch3_gain", 1)
         return super().reconfigure(config, dependencies)
 
     async def get_readings(
@@ -91,13 +108,13 @@ class adc(Sensor, EasyResource):
         
         adc = Adafruit_ADS1x15.ADS1015(address=self.i2c_address, busnum=int(self.i2c_bus))
 
-        chan0 = adc.read_adc(0, gain=1)
+        chan0 = adc.read_adc(0, gain=self.ch0_gain)
         time.sleep(0.1)
-        chan1 = adc.read_adc(1, gain=1)
+        chan1 = adc.read_adc(1, gain=self.ch1_gain)
         time.sleep(0.1)
-        chan2 = adc.read_adc(2, gain=1)
+        chan2 = adc.read_adc(2, gain=self.ch2_gain)
         time.sleep(0.1)
-        chan3 = adc.read_adc(3, gain=1)
+        chan3 = adc.read_adc(3, gain=self.ch3_gain)
 
         # Return a dictionary of the readings
         return {
